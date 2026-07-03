@@ -97,7 +97,7 @@
     display:flex;
     flex-direction:column;
     align-items:center;
-    gap: 30px;
+    gap: 24px;
   }
 
   .mark-wrap{ position:relative; width: 104px; height: 104px; }
@@ -115,37 +115,18 @@
     transition: stroke-dashoffset 0.15s ease-out;
   }
 
-  .hex-glyph{ fill: var(--ink); }
-
-  .title-block{
-    display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center;
-  }
-
-  .eyebrow{
-    font-family:'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--accent-2);
-  }
-
-  .title{
-    font-family:'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 26px;
+  /* "Preparing download" والی لائن */
+  .preparing-text{
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
     letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: -8px;
   }
 
-  .subtitle{ font-size: 13.5px; color: var(--muted2); max-width: 320px; }
-
+  /* پروگریس بار (بغیر ٹیکسٹ) */
   .progress-wrap{ width: 320px; display:flex; flex-direction:column; gap:10px; }
-
-  .progress-top{
-    display:flex; justify-content:space-between; align-items:baseline;
-    font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--muted2);
-  }
-
-  .progress-top .pct{ color: var(--accent-2); font-weight:500; font-size:13px; }
 
   .rail{
     width: 100%; height: 6px;
@@ -177,36 +158,39 @@
     100%{ transform: translateX(320px); }
   }
 
-  .cta{
-    width: 320px;
-    display:flex; align-items:center; justify-content:center; gap:10px;
-    padding: 14px 20px;
-    border-radius: 10px;
-    border: 1px solid var(--line);
-    background: var(--panel);
+  /* نیچے ٹرسٹڈ ہیڈنگز کا نیا سیکشن */
+  .trusted-headings{
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .trust-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
     color: var(--muted2);
-    font-family:'Space Grotesk', sans-serif;
-    font-weight:600;
-    font-size: 14.5px;
-    cursor: not-allowed;
-    opacity: 0.6;
-    transition: all 0.25s ease;
-    position:relative;
-    overflow:hidden;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
   }
 
-  .cta.ready{
-    background: linear-gradient(135deg, var(--accent), #6647e0);
-    border-color: transparent;
-    color: #fff;
-    opacity: 1;
-    cursor:pointer;
-    box-shadow: 0 8px 24px rgba(124,92,255,0.35);
+  .trust-item svg{
+    width: 18px;
+    height: 18px;
+    color: var(--green);
   }
 
-  .cta svg{ width:16px; height:16px; }
-  .cta.ready:hover{ transform: translateY(-1px); box-shadow: 0 10px 28px rgba(124,92,255,0.45); }
+  .trust-item span{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+  }
 
+  /* پرانی ٹرسٹ رو کو بھی رکھتے ہیں (صاف ستھرا) */
   .trust-row{
     display:flex; align-items:center; gap: 16px;
     font-family:'JetBrains Mono', monospace;
@@ -242,7 +226,7 @@
   </div>
 
   <div class="center">
-
+    <!-- ہیکساگون نشان -->
     <div class="mark-wrap">
       <svg class="mark" viewBox="0 0 104 104">
         <defs>
@@ -253,36 +237,47 @@
         </defs>
         <polygon class="hex-bg" points="52,6 92,28 92,76 52,98 12,76 12,28"/>
         <polygon class="hex-fg" id="ring" points="52,6 92,28 92,76 52,98 12,76 12,28"/>
-        <!-- نیا ڈاؤن لوڈ آئیکن -->
-        <!-- نیچے کی طرف تیر -->
         <path d="M52 34 L52 62 M42 54 L52 64 L62 54" fill="none" stroke="var(--accent-2)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <!-- نیچے والی لکیر (ٹرے) -->
         <path d="M34 72 L70 72" fill="none" stroke="var(--ink)" stroke-width="4.5" stroke-linecap="round"/>
       </svg>
     </div>
 
-    <div class="title-block">
-      <div class="eyebrow">Preparing download</div>
-      <div class="title">Almost there</div>
-      <div class="subtitle">Your file is being verified through a secure, trusted process — this only takes a moment.</div>
-    </div>
+    <!-- "Preparing download" واپس آگیا -->
+    <div class="preparing-text">Preparing download</div>
 
+    <!-- پروگریس بار -->
     <div class="progress-wrap">
-      <div class="progress-top">
-        <span id="stage">Connecting</span>
-        <span class="pct" id="pct">0%</span>
-      </div>
       <div class="rail"><div class="rail-fill" id="railFill"></div></div>
     </div>
 
-    <button class="cta" id="ctaBtn" disabled>
-      <svg id="ctaIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="9"></circle>
-        <path d="M12 7v5l3 3"></path>
-      </svg>
-      <span id="ctaText">Preparing…</span>
-    </button>
+    <!-- نئے ٹرسٹڈ ہیڈنگز -->
+    <div class="trusted-headings">
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+        <span>Secure Connection</span>
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <span>Verified Publisher</span>
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        <span>No Logs</span>
+      </div>
+    </div>
 
+    <!-- پرانی ٹرسٹ رو بھی رکھی گئی ہے -->
     <div class="trust-row">
       <span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
@@ -299,7 +294,6 @@
         Open source
       </span>
     </div>
-
   </div>
 
   <div class="side right">
@@ -329,53 +323,23 @@
 <script>
   const ring = document.getElementById('ring');
   const railFill = document.getElementById('railFill');
-  const pctEl = document.getElementById('pct');
-  const stageEl = document.getElementById('stage');
-  const cta = document.getElementById('ctaBtn');
-  const ctaText = document.getElementById('ctaText');
-  const ctaIcon = document.getElementById('ctaIcon');
-
   const HEX_PERIMETER = 264;
 
-  const stages = [
-    { at: 0,  label: 'Connecting' },
-    { at: 20, label: 'Verifying source' },
-    { at: 45, label: 'Scanning file' },
-    { at: 75, label: 'Finalizing' },
-    { at: 100, label: 'Ready' }
-  ];
-
   let progress = 0;
-
-  function currentStage(p){
-    let s = stages[0].label;
-    for(const st of stages){ if(p >= st.at) s = st.label; }
-    return s;
-  }
 
   function tick(){
     const remaining = 100 - progress;
     const step = Math.max(0.3, remaining * 0.045 + Math.random()*0.6);
     progress = Math.min(100, progress + step);
 
+    // ہیکساگون رنگ اور پروگریس بار اپڈیٹ
     const offset = HEX_PERIMETER - (progress/100)*HEX_PERIMETER;
     ring.style.strokeDashoffset = offset;
     railFill.style.width = progress + '%';
-    pctEl.textContent = Math.floor(progress) + '%';
-    stageEl.textContent = currentStage(progress);
 
     if(progress < 100){
       requestAnimationFrame(() => setTimeout(tick, 16));
-    } else {
-      finish();
     }
-  }
-
-  function finish(){
-    cta.classList.add('ready');
-    cta.disabled = false;
-    ctaText.textContent = 'Download now';
-    ctaIcon.innerHTML = '<path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/>';
   }
 
   tick();
